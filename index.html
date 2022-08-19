@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Shopping Cart</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+   <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+   <section>
+      <div class="container">
+         <h2>My shopping cart</h2>
+         <div class="cart">
+            <div class="col-md-12 col-lg-10 mx-auto">
+               <div class="cart-item">
+                  <div class="row" id="container-one">
+                     <div class="col-md-7 center-item">
+                        <img src="images/product-1.png" alt="">
+                        <h5>iPhone 11 128GB Black</h5>
+                     </div>
+
+                     <div class="col-md-5 center-item">
+
+                        <div class="input-group number-spinner">
+                           <button class="btn btn-default" id="phone-sub"><i class="fas fa-minus"></i></button>
+                           <input type="number" min="0" class="form-control text-center" value="1" id="input-phone">
+                           <button class="btn btn-default" id="phone-add"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <h5>$<span id="phone-money">1219</span> </h5>
+
+                        <img src="images/remove.png" id="removeBtn" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row" id="container-two">
+                     <div class="col-md-7 center-item mx-auto">
+                        <img src="images/product-2.png" alt="">
+                        <h5>iPhone 11 Silicone Case - Black</h5>
+                     </div>
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button class="btn btn-default" id="case-sub"><i class="fas fa-minus"></i></button>
+                           <input type="number" min="0" class="form-control text-center" value="1" id="case-phone">
+                           <button class="btn btn-default" id="case-add"><i class="fas fa-plus"></i></button>
+
+                        </div>
+                        <h5>$<span id="case-money">59</span></h5>
+                        <img src="images/remove.png" id="removeBtnn" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+
+                     <div class="col-md-8">
+                        <h5>Subtotal: </h5>
+                        <h5>Tax:</h5>
+                        <h5>Total:</h5>
+                     </div>
+
+                     <div class="col-md-4 status">
+                        <h5>$<span id="sub-total">0</span></h5>
+                        <h5>10%</h5>
+                        <h5>$<span id="total">1278</span></h5>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 pt-4 pb-4">
+                  <button type="button" class="btn btn-success check-out">Check Out</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <script>
+      function addAndSubElement(isTrue, id) {
+         let inputPhoneCount = document.getElementById(id)
+         let inputPhoneCountString = inputPhoneCount.value
+         let inputPhoneCountValue = parseInt(inputPhoneCountString)
+         if (isTrue == true) {
+            let newInputPhoneCountValue = inputPhoneCountValue + 1
+            inputPhoneCount.value = newInputPhoneCountValue
+            return newInputPhoneCountValue
+         }
+         else {
+            let newInputPhoneCountValue = inputPhoneCountValue - 1
+            inputPhoneCount.value = newInputPhoneCountValue
+            return newInputPhoneCountValue
+         }
+      }
+
+      function phoneTotalMoney(id, moneyAmount, count) {
+         if (id == 'phone-money') {
+            let phoneMoney = document.getElementById(id)
+            let totalPhoneMoney = count * moneyAmount
+            phoneMoney.innerText = totalPhoneMoney
+            let casePhoneMoney = parseInt(document.getElementById('case-money').innerText)
+            let sub = totalPhoneMoney + casePhoneMoney
+            document.getElementById('sub-total').innerText = sub
+            let tax = .1
+            let total = ((sub * tax) + sub).toFixed(2)
+            document.getElementById('total').innerText = total
+
+         }
+         else if (id == 'case-money') {
+            let caseMoney = document.getElementById(id)
+            let casePhoneMoney = count * moneyAmount
+            caseMoney.innerText = casePhoneMoney
+            let totalPhoneMoney = parseInt(document.getElementById('phone-money').innerText)
+            let sub = totalPhoneMoney + casePhoneMoney
+            document.getElementById('sub-total').innerText = sub
+            let tax = .1
+            let total = ((sub * tax) + sub).toFixed(2)
+            document.getElementById('total').innerText = total
+         }
+
+      }
+
+
+      document.getElementById('phone-add').addEventListener('click', function () {
+         let getVal = addAndSubElement(true, 'input-phone')
+         phoneTotalMoney('phone-money', 1219, getVal)
+
+      })
+      document.getElementById('phone-sub').addEventListener('click', function () {
+         let getVal = addAndSubElement(false, 'input-phone')
+         phoneTotalMoney('phone-money', 1219, getVal)
+      })
+
+
+      document.getElementById('case-add').addEventListener('click', function () {
+         let getVal = addAndSubElement(true, 'case-phone')
+         phoneTotalMoney('case-money', 59, getVal)
+      })
+
+      document.getElementById('case-sub').addEventListener('click', function () {
+         let getVal = addAndSubElement(false, 'case-phone')
+         phoneTotalMoney('case-money', 59, getVal)
+      })
+      document.getElementById('removeBtn').addEventListener('click', function () {
+         document.getElementById('container-one').style.display = 'none'
+      })
+      document.getElementById('removeBtnn').addEventListener('click', function () {
+         document.getElementById('container-two').style.display = 'none'
+      })
+
+   </script>
+</body>
+
+</html>
